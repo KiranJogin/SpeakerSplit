@@ -7,26 +7,22 @@ import uvicorn
 
 app = FastAPI(title="Speaker Diarization + Transcription API")
 
-# Mount static files (CSS, JS)
+# Mount static and saved session folders
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount("/sessions", StaticFiles(directory="saved_sessions"), name="sessions")
 
-# Setup HTML templates
 templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
-    """
-    Serve the frontend HTML page
-    """
+    """Serve the frontend page."""
     return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.post("/transcribe")
 async def transcribe_endpoint(file: UploadFile = File(...)):
-    """
-    Upload an audio file — get transcript with speaker labels
-    """
+    """Upload an audio file and return its diarized transcription."""
     try:
         output = await transcribe_audio(file)
         return JSONResponse(content=output)
