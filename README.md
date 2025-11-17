@@ -1,137 +1,149 @@
-SpeakerSplit – AI Voice Separation System
-🔊 AI-Powered Multi-Speaker Voice Separation & Playback
+# 🎙️ SpeakerSplit – AI Voice Separation System
+## 🔊 AI-Powered Multi-Speaker Voice Separation & Playback
 
 SpeakerSplit is an AI-based audio processing application designed to separate mixed audio recordings containing multiple speakers into clean, isolated audio tracks.
 Using advanced signal processing and machine learning clustering techniques, the system identifies different speakers, segments the audio, and reconstructs individual speaker tracks that users can play or download.
 
-Built with Streamlit for the interface and leveraging powerful audio processing libraries like librosa, scipy, and scikit-learn, SpeakerSplit enables seamless audio upload, processing configuration, playback, and analysis.
+Built with **Streamlit** for the interface and leveraging powerful audio processing libraries like **librosa**, **scipy**, and **scikit-learn**, SpeakerSplit enables seamless audio upload, configuration, playback, and visual analysis.
 
-🚀 Features
+---
 
-Separate multiple overlapping voices from a single audio source
+## 🚀 Features
+- Separate multiple overlapping voices from a single audio source
+- Automatic speaker identification & clustering (2–6 speakers supported)
+- Noise reduction, audio normalization & spectral filtering
+- Individual speaker track export & playback dashboard
+- Visual analysis: waveform & spectrogram preview
+- User-configurable settings (noise level, speaker count, chunk size)
 
-Automatic speaker identification & clustering (2–6 speakers supported)
+---
 
-Noise reduction, audio normalization & spectral filtering
+## 🏗 System Architecture
 
-Individual speaker track export & playback dashboard
+### **Frontend (UI Layer) – Streamlit Application**
+| Component | Description |
+|-----------|------------|
+| Framework | Streamlit |
+| Layout | Multi-tab interface |
+| Tabs | Upload & Process, Playback Dashboard, Analysis |
+| State Management | Session state for audio, separated tracks, sample rate |
+| Configurable Controls | Sidebar for noise reduction, normalization, speaker count |
 
-Visual audio analysis (waveform & spectrogram views)
+---
 
-User-configurable settings (noise level, speaker count, chunk size)
+### **Backend Architecture**
+| Folder / Module | Responsibility |
+|-----------------|----------------|
+| `audio_processor.py` | Preprocessing (noise removal, normalization, filtering) |
+| `speaker_separator.py` | Feature extraction, clustering, separation logic |
+| `app.py` | Main orchestrator & UI integration |
 
-🏗 System Architecture
-Frontend (UI Layer) – Streamlit Application
-Component	Description
-Framework	Streamlit
-Layout	Multi-tab interface
-Tabs	Upload & Process, Playback Dashboard, Analysis
-State Management	Session state for audio, separated tracks, sample rate
-Configurable Controls	Sidebar for noise reduction, normalization, speaker count
-Backend Architecture
-Folder / Module	Responsibility
-audio_processor.py	Preprocessing (noise removal, normalization, filtering)
-speaker_separator.py	Feature extraction, clustering, separation logic
-app.py	Main orchestrator & UI integration
-Processing Pipeline
+### **Processing Pipeline**
+1. Upload audio & convert format (`soundfile` / `pydub`)
+2. Apply preprocessing (noise profile estimation, normalization)
+3. Extract audio features (MFCC, spectral contrast, chroma, ZCR)
+4. Segment audio into time-based chunks (~1 second)
+5. Cluster speaker segments (`KMeans` / hierarchical clustering)
+6. Rebuild separated tracks for each speaker
+7. Output playback & download options
 
-Upload audio & convert format (soundfile/pydub)
+---
 
-Apply preprocessing (noise profile estimation, normalization)
+## 🔬 Core Signal Processing Methods
+| Technique | Purpose |
+|-----------|---------|
+| STFT (Short-Time Fourier Transform) | Time–frequency analysis |
+| Median-based noise profiling | Background noise reduction |
+| Band-pass filtering (80 Hz – 8 kHz) | Human voice isolation |
+| Spectral masking | Remove noise outside threshold |
+| 1-second chunk segmentation | Granular clustering per speaker |
 
-Extract features (MFCC, spectral contrast, chroma, zero-crossing rate)
+---
 
-Segment audio into time-based chunks (~1 second)
+## 🧠 Machine Learning Components
+| Component | Description |
+|-----------|-------------|
+| Feature Extraction | MFCC (13), spectral contrast (7), chroma (12), ZCR |
+| Clustering Algorithms | KMeans & Hierarchical clustering |
+| Distance Metrics | Cosine / Euclidean |
+| Speaker Count | Configurable (2–6 speakers) |
 
-Cluster speaker segments (KMeans / hierarchical clustering)
+---
 
-Rebuild separated tracks for each speaker
+## 📂 Data Storage Strategy
+- Temporary storage via `tempfile`
+- In-memory processing via NumPy arrays
+- Streamlit session state persistence
+- No database or permanent storage
 
-Output playback & download options
+---
 
-🔬 Core Signal Processing Methods
-Technique	Purpose
-STFT (Short-Time Fourier Transform)	Time–frequency analysis
-Median-based noise profiling	Background noise reduction
-Band-pass filtering (80 Hz – 8 kHz)	Isolate human voice
-Spectral masking	Remove noise outside threshold
-1-second chunk segmentation	Granular clustering per speaker
-🧠 Machine Learning Components
-Component	Description
-Feature Extraction	MFCC (13), spectral contrast (7), chroma (12), ZCR
-Clustering Algorithms	KMeans & Hierarchical clustering
-Distance Metrics	Cosine / Euclidean
-Speaker Count	Configurable (2–6 speakers)
-📂 Data Storage Strategy
+## 📦 Dependencies
 
-Temporary storage via tempfile
+### **Audio & Signal Processing**
+- `librosa`
+- `soundfile`
+- `pydub`
+- `scipy.signal`
+- `numpy`
 
-In-memory processing via NumPy arrays
+### **Machine Learning & Clustering**
+- `scikit-learn`
+- `scipy.cluster.hierarchy`
+- `scipy.spatial.distance`
 
-Streamlit session state persistence
+### **UI & Visualization**
+- `streamlit`
+- `matplotlib`
 
-No database or permanent storage
+---
 
-📦 Dependencies
-Audio & Signal Processing
+## 🖥 User Interface Capabilities
+- Streamlit-based interactive web dashboard
+- Upload audio, view spectrogram & waveforms
+- Per-speaker playback and download controls
+- Sidebar settings for intelligent configuration
 
-librosa
+---
 
-soundfile
+## ⚙️ Audio Parameters
+| Parameter | Default |
+|-----------|---------|
+| Sample Rate | Auto-managed by `librosa` |
+| FFT Size | 2048 |
+| Hop Length | 512 |
+| Noise Threshold | 1.5× baseline |
+| Normalization | 95% peak limit |
 
-pydub
+---
 
-scipy.signal
+## 📌 Use Cases
+- Podcast multi-speaker audio editing
+- Meeting / Lecture separation for clarity
+- Interview audio enhancement
+- Audio forensics & evidence analysis
+- Post-production for content creators
 
-numpy
+---
 
-Machine Learning & Clustering
+## 🏁 Future Enhancements
+- Name-based speaker labeling
+- Real-time microphone streaming
+- Speech-to-text & summaries per speaker
+- Automated transcription export
 
-scikit-learn
+---
 
-scipy.cluster.hierarchy
+## ⭐ Support
+If you find this project helpful, please consider giving a **star ⭐** on GitHub!
 
-scipy.spatial.distance
+---
 
-UI & Visualization
+## 🤝 Contributions
+Pull requests and ideas are welcome.  
+Feel free to open an issue for bugs, improvements, or collaboration.
 
-streamlit
+---
 
-matplotlib
-
-🖥 User Interface
-
-Streamlit-based interactive web dashboard
-
-Upload audio, view spectrograms & waveforms, play separated tracks
-
-Sidebar for intelligent configuration
-
-⚙️ Audio Parameters
-Parameter	Default
-Sample Rate	Handled automatically by librosa
-FFT Size	2048
-Hop Length	512
-Noise Threshold	1.5× baseline
-Normalization	95% peak limit
-📌 Use Cases
-
-Podcast voice separation
-
-Meeting / Lecture audio clarity
-
-Interview audio enhancement
-
-Audio forensics & evidence analysis
-
-Content creation & editing
-
-🏁 Future Enhancements
-
-Name-based speaker labeling
-
-Real-time microphone streaming support
-
-Speech-to-text & per-speaker summary
-
-Automated transcription export
+## 📜 License
+MIT License
